@@ -1,0 +1,13 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+*.sublime*
+*.log
+.DS_Store
+node_modules
+_ilya.kantor
+
+
