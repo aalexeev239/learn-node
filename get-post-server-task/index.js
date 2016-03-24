@@ -28,23 +28,30 @@
 
 let url = require('url');
 let fs = require('fs');
+const path = require('path');
 const handleFile = require('./modules/handleFile');
 
 require('http').createServer(function(req, res) {
 
   let pathname = decodeURI(url.parse(req.url).pathname);
-
+  
   switch(req.method) {
-  case 'GET':
-    if (pathname == '/') {
-      // rewrite with streams and error handling (!)
-      handleFile('/public/index.html', __dirname, res);
-      return;
-    }
+    case 'GET':
+      if (pathname == '/') {
+        // rewrite with streams and error handling (!)
+        handleFile('/public/index.html', __dirname, res);
+        return;
+      } else {
+        let basename = pathname.split('/');
+        basename = basename[basename.length - 1];
+        handleFile(basename, path.join(__dirname, 'files'), res);
+      }
+      break;
 
-  default:
-    res.statusCode = 502;
-    res.end("Not implemented");
-  }
+
+    default:
+      res.statusCode = 502;
+      res.end("Not implemented");
+    }
 
 }).listen(3000);

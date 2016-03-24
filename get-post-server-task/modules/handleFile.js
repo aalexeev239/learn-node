@@ -26,14 +26,14 @@ let handleFile = (filename, root, res) => {
     // check relativeness
     if (filePath.indexOf(root) != 0 ) {
         res.statusCode = 404;
-        res.end("file not found");
+        res.end(`file "${filename}" not found`);
         return;
     }
 
     fs.stat(filePath, (err, stats) => {
         if (err || !stats.isFile()) {
             res.statusCode = 404;
-            res.end("file not found");
+            res.end(`file "${filename}" not found`);
             return;
         }
         const mime = require('mime').lookup(filePath);

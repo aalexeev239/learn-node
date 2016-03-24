@@ -9,8 +9,6 @@ const kantorProjectPath = '_ilya.kantor/';
 const gulp = require('gulp');
 const path = require('path');
 
-console.log('!' + path.dirname(kantorProjectPath));
-
 gulp.task('push', () => gulp.src([
         '!node_modules',
         '!node_modules/**',
