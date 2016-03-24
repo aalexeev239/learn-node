@@ -30,6 +30,9 @@ let url = require('url');
 let fs = require('fs');
 const path = require('path');
 const handleFile = require('./modules/handleFile');
+const config = require('config');
+
+
 
 require('http').createServer(function(req, res) {
 

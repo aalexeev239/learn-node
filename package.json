@@ -8,6 +8,7 @@
   },
   "author": "",
   "devDependencies": {
+    "config": "^1.19.0",
     "gulp": "^3.9.1",
     "mime": "^1.3.4"
   }
