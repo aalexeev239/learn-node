@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
+const mime = require('mime');
 
-let handleFile = (filename, root, res) => {
+let getFile = (filename, root, res) => {
 
     // check name
     try {
@@ -36,12 +37,12 @@ let handleFile = (filename, root, res) => {
             res.end(`file "${filename}" not found`);
             return;
         }
-        const mime = require('mime').lookup(filePath);
-        res.setHeader('Content-Type', `${mime}; charset=utf-8`);
+        const mimeType = mime.lookup(filePath);
+        res.setHeader('Content-Type', `${mimeType}; charset=utf-8`);
 
         let file = new fs.ReadStream(filePath);
         sendFileStream(file, res);
-    })
+    });
 
 }
 
@@ -70,4 +71,4 @@ let sendFileStream = (file, res) => {
     })
 }
 
-module.exports = handleFile;
+module.exports = getFile;

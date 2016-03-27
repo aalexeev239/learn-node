@@ -21,6 +21,10 @@
   <input type="submit" value="Загрузить">
 </form>
 
+<ul id="files">
+
+</ul>
+
 <script>
 
   document.onsubmit = function(event) {
@@ -35,7 +39,26 @@
     var xhr = new XMLHttpRequest();
 
     xhr.onload = function() {
-      alert(`${xhr.status}: ${xhr.responseText}`);
+      console.log(xhr.responseText);
+      var resp = xhr.responseText;
+
+      try {
+        resp = JSON.parse(xhr.responseText).files;
+      } catch (err) {
+        alert(`${xhr.status}: ${resp}`);
+        return;
+      }
+
+      let files = document.getElementById('files');
+
+      let html = '';
+
+      resp.forEach(function(file){
+        html += `<li>${file}</li>`;
+      })
+
+      files.innerHTML = html;
+
     };
 
     switch(event.target.id) {

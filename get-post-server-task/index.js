@@ -26,35 +26,57 @@
 
 'use strict';
 
-let url = require('url');
-let fs = require('fs');
+const url = require('url');
+const fs = require('fs');
 const path = require('path');
-const handleFile = require('./modules/handleFile');
 const config = require('config');
-
-
+const getFile = require('./modules/getFile');
+const uploadFile = require('./modules/uploadFile');
+const deleteFile = require('./modules/deleteFile');
 
 require('http').createServer(function(req, res) {
 
   let pathname = decodeURI(url.parse(req.url).pathname);
-  
+
   switch(req.method) {
     case 'GET':
       if (pathname == '/') {
         // rewrite with streams and error handling (!)
-        handleFile('/public/index.html', __dirname, res);
+        getFile('/public/index.html', __dirname, res);
         return;
       } else {
         let basename = pathname.split('/');
         basename = basename[basename.length - 1];
-        handleFile(basename, path.join(__dirname, 'files'), res);
+        getFile(basename, config.filesDir, res);
+        return;
       }
+      break;
+
+    case 'POST':
+      if (pathname == '/') {
+        res.statusCode = 400;
+        res.end('Bad request');
+        return;
+      }
+      uploadFile(pathname, req, res);
+      break;
+
+    case 'DELETE':
+      if (pathname == '/') {
+        res.statusCode = 404;
+        res.end('File not found');
+        return;
+      }
+
+      deleteFile(pathname, res);
+
       break;
 
 
     default:
       res.statusCode = 502;
-      res.end("Not implemented");
+      res.end('Not implemented');
+      return;
     }
 
-}).listen(3000);
+}).listen(config.port);
